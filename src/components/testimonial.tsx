@@ -12,7 +12,7 @@ export const Testimonial = ({
   image: string;
 }) => {
   return (
-    <div className="relative flex min-h-64 flex-1 flex-col justify-between rounded-xl bg-[#1a1a1a] p-4">
+    <div className="relative flex min-h-64 flex-1 flex-col justify-between rounded-xl bg-secondary p-4">
       <div className="absolute -top-6 left-6 flex h-12 w-12 items-center justify-center rounded-full bg-white text-3xl">
         <Quote className="rotate-180" color="black" strokeWidth={3} />
       </div>

@@ -116,7 +116,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="mb-9 ml-[10%] mr-[10%] flex h-52 w-4/5 items-center justify-center rounded-2xl bg-[#1a1a1a]">
+      <footer className="mb-9 ml-[10%] mr-[10%] flex h-52 w-4/5 items-center justify-center rounded-2xl bg-secondary">
         <Link href={"/"}>
           <Image
             src="/logo/byte.png"
