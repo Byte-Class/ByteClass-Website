@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Testimonial } from "@/components/testimonial";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -114,6 +115,18 @@ export default function Home() {
           </p>
         </div>
       </main>
+
+      <footer className="mb-9 ml-[10%] mr-[10%] flex h-52 w-4/5 items-center justify-center rounded-2xl bg-[#1a1a1a]">
+        <Link href={"/"}>
+          <Image
+            src="/logo/byte.png"
+            width={100}
+            height={100}
+            alt="Picture of the author"
+            className="mr-4"
+          />
+        </Link>
+      </footer>
     </>
   );
 }
