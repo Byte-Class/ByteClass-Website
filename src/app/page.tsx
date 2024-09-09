@@ -1,9 +1,15 @@
+import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home | ByteClass",
+  icons: "/logo/byte.png",
+};
 
 import { Navbar } from "@/components/navbar";
 import { Testimonial } from "@/components/testimonial";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 
 export default function Home() {
   return (
