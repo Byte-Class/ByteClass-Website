@@ -21,7 +21,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "googleapis": "^144.0.0",
-    "jsonwebtoken": "^9.0.2",
+    "jose": "^5.9.2",
     "lucide-react": "^0.439.0",
     "next": "14.2.8",
     "next-themes": "^0.3.0",
@@ -33,7 +33,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
