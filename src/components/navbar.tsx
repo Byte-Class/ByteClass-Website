@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const Navbar = () => {
   return (
@@ -12,7 +13,9 @@ export const Navbar = () => {
         height={100}
       />
 
-      <Button className="px-12 py-8">Sign In</Button>
+      <Link href={"/signin"}>
+        <Button className="px-12 py-8">Sign In</Button>
+      </Link>
     </nav>
   );
 };
