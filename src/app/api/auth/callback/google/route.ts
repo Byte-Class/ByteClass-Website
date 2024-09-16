@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import { SignJWT } from "jose";
 import { redirect } from "next/navigation";
 import { google } from "googleapis";
 import { cookies } from "next/headers";
@@ -159,7 +159,6 @@ export async function GET(req: Request) {
 
     // if the session does exist, then we just update the session for the user
     if (sessionExists.length > 0) {
-      console.log("ran!");
       sessionToken = await db
         .update(session)
         .set({
@@ -167,8 +166,6 @@ export async function GET(req: Request) {
         })
         .where(eq(session.user_id, userId))
         .returning({ sessionToken: session.id });
-
-      console.log(sessionToken);
     }
   } catch (err) {
     redirect("http://localhost:3000/error");
@@ -179,16 +176,18 @@ export async function GET(req: Request) {
   }
 
   // Issue access token/refresh token with JWT
-  const accessToken = jwt.sign(
-    sessionToken[0],
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: "2hrs",
-    },
-  );
+  const token = await new SignJWT({
+    token: sessionToken[0].sessionToken,
+  })
+    .setExpirationTime(sessionExpiration)
+    .setIssuedAt()
+    .setProtectedHeader({
+      alg: "HS256",
+    })
+    .sign(new TextEncoder().encode(process.env.ACCESS_TOKEN_SECRET));
 
   // send to client with cookies 🍪
-  cookies().set("session", accessToken, {
+  cookies().set("session", token, {
     httpOnly: true,
     secure: true,
   });
