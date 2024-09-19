@@ -10,3 +10,11 @@ export const GoogleAuthRes = z.object({
 });
 
 export type T_GoogleAuthRes = z.infer<typeof GoogleAuthRes>;
+
+export const AccessToken = z.object({
+  sessionId: z.string(),
+  exp: z.number(),
+  iat: z.number(),
+});
+
+export type T_AccessToken = z.infer<typeof AccessToken>;

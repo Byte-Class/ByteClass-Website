@@ -177,7 +177,7 @@ export async function GET(req: Request) {
 
   // Issue access token/refresh token with JWT
   const token = await new SignJWT({
-    token: sessionToken[0].sessionToken,
+    sessionId: sessionToken[0].sessionToken,
   })
     .setExpirationTime(sessionExpiration)
     .setIssuedAt()
