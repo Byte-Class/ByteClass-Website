@@ -1,7 +1,6 @@
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import Provider from "@/components/provider";
+import { Provider } from "@/components/provider";
 
 export default function RootLayout({
   children,
@@ -11,14 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Provider>{children}</Provider>
-        </ThemeProvider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
