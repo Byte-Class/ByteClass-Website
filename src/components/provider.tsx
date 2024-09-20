@@ -7,7 +7,9 @@ import { httpBatchLink } from "@trpc/client";
 import { trpc } from "@/client";
 import { ThemeProvider } from "@/components/theme-provider";
 
+// This provides data to the entire application
 export const Provider = ({ children }: { children: React.ReactNode }) => {
+  // trpc client and tanstack client
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({

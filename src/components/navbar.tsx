@@ -1,8 +1,11 @@
+import Link from "next/link";
 import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { auth } from "@/core/hooks/auth";
+import { greeting } from "@/core/utils/greeting";
+import { BreadCrumbs } from "@/components/breadcrumbs";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Navbar = async () => {
   const session = await auth();
@@ -27,6 +30,21 @@ export const Navbar = async () => {
 
   // return logged in navbar
   return (
-    <nav className="flex h-28 w-full items-center justify-between px-12 py-4"></nav>
+    <nav className="flex h-28 w-full items-center justify-between gap-4 px-12 py-4">
+      <Avatar>
+        <AvatarImage src={session.user.photo} />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+
+      <div className="mr-auto flex flex-col gap-2 font-bold">
+        <p>
+          {greeting(new Date())} {session.user.name.split(" ")[0]} 👋
+        </p>
+
+        <BreadCrumbs />
+      </div>
+
+      <Button className="px-12 py-8">Sign Out</Button>
+    </nav>
   );
 };
