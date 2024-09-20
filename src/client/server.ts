@@ -1,0 +1,11 @@
+import { createCallerFactory } from "@/server/trpc";
+import { Context } from "@/server/context";
+import { appRouter } from "@/server";
+
+export const serverTrpc = (session: Context) => {
+  const createCaller = createCallerFactory(appRouter);
+
+  const caller = createCaller(session);
+
+  return caller;
+};
