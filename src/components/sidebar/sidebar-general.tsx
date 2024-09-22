@@ -26,7 +26,7 @@ export const SideBarGeneral = () => {
           <React.Fragment key={link.title}>
             <Link
               href={`/dashboard/${link.href}`}
-              className="text-lg font-bold"
+              className="text-lg font-bold transition-all hover:text-[#0077b6]"
             >
               {link.title}
             </Link>
