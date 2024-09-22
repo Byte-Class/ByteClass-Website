@@ -2,10 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Home | ByteClass",
   icons: "/logo/byte.png",
-};
+} satisfies Metadata;
 
 import { Navbar } from "@/components/navbar";
 import { Testimonial } from "@/components/testimonial";
