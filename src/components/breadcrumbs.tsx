@@ -15,8 +15,6 @@ import {
 export const BreadCrumbs = () => {
   const pathname = usePathname().split("/").splice(2, 3)[0];
 
-  console.log(pathname);
-
   return (
     <Breadcrumb>
       <BreadcrumbList>
