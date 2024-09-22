@@ -6,9 +6,7 @@ export async function createContext() {
     return {};
   }
 
-  return {
-    session,
-  };
+  return { session };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;
