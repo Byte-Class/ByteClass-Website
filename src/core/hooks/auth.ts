@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 
 import { AccessToken, T_AccessToken } from "@/core/types/validators";
 import { db } from "@/core/db";
-import { session, user } from "@/core/db/schema";
+import { googleInfo, session, user } from "@/core/db/schema";
 
 export const auth = async () => {
   const token = cookies().get("session")?.value;
@@ -47,7 +47,17 @@ export const auth = async () => {
     .from(user)
     .where(eq(user.id, exists[0].user_id));
 
-  if (exists.length === 0 || userData[0] == undefined) {
+  if (userData.length === 0 || userData[0] == undefined) {
+    return undefined;
+  }
+
+  // fetch google access and refresh tokens
+  const providerData = await db
+    .selectDistinct()
+    .from(googleInfo)
+    .where(eq(googleInfo.user_id, exists[0].user_id));
+
+  if (providerData.length === 0 || providerData[0] == undefined) {
     return undefined;
   }
 
@@ -57,6 +67,10 @@ export const auth = async () => {
       name: userData[0].name,
       email: userData[0].email,
       photo: userData[0].photo,
+    },
+    google: {
+      access_token: providerData[0].access_token,
+      refresh_token: providerData[0].refresh_token,
     },
     sessionId: exists[0].id,
     expires: exists[0].expires,
