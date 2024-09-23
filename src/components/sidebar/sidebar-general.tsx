@@ -26,11 +26,11 @@ export const SideBarGeneral = () => {
           <React.Fragment key={link.title}>
             <Link
               href={`/dashboard/${link.href}`}
-              className="text-lg font-bold transition-all hover:text-[#0077b6]"
+              className="text-lg font-bold transition-all hover:text-blue-500"
             >
               {link.title}
             </Link>
-            <Separator className="my-2 ml-2 w-[calc(100%-0.5rem)]" />
+            <Separator className="my-2" />
           </React.Fragment>
         );
       })}
