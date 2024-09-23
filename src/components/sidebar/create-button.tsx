@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import { CalendarCheck, CalendarDays, Plus } from "lucide-react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   DropdownMenu,
@@ -19,10 +22,39 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "../ui/input";
+
+const createCalendarSchema = z.object({
+  name: z.string().min(2).max(50),
+  description: z.string().min(2).max(200),
+});
 
 export const CreateButton = () => {
   const [createCalendar, setCreateCalendar] = useState<boolean>(false);
   const [createEvent, setCreateEvent] = useState<boolean>(false);
+
+  const createCalendarForm = useForm<z.infer<typeof createCalendarSchema>>({
+    resolver: zodResolver(createCalendarSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
+
+  const handleCreateCalendar = (
+    values: z.infer<typeof createCalendarSchema>,
+  ) => {
+    console.log(values);
+  };
 
   return (
     <>
@@ -32,13 +64,50 @@ export const CreateButton = () => {
             <DialogTitle>Create Calendar</DialogTitle>
           </DialogHeader>
 
-          <div>
-            <h2>Create Calendar Form</h2>
-          </div>
+          <Form {...createCalendarForm}>
+            <form
+              onSubmit={createCalendarForm.handleSubmit(handleCreateCalendar)}
+            >
+              <div className="flex flex-col gap-4">
+                <FormField
+                  control={createCalendarForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Name of Calendar" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        This is the name of your calendar
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <DialogFooter>
-            <Button>Create Calendar</Button>
-          </DialogFooter>
+                <FormField
+                  control={createCalendarForm.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Name of Calendar" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        This is the name of your calendar
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <DialogFooter>
+                <Button type="submit">Create Calendar</Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
 
