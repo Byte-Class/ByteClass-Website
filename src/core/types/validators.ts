@@ -8,7 +8,6 @@ export const GoogleAuthRes = z.object({
   id_token: z.string(),
   expiry_date: z.number(),
 });
-
 export type T_GoogleAuthRes = z.infer<typeof GoogleAuthRes>;
 
 export const AccessToken = z.object({
@@ -16,6 +15,7 @@ export const AccessToken = z.object({
   exp: z.number(),
   iat: z.number(),
 });
+export type T_AccessToken = z.infer<typeof AccessToken>;
 
 export const CalendarValidator = z.object({
   name: z.string().min(1).max(50),
@@ -31,4 +31,17 @@ export const EventValidator = z.object({
   end: z.date(),
 });
 
-export type T_AccessToken = z.infer<typeof AccessToken>;
+export type T_Session = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    photo: string;
+  };
+  google: {
+    access_token: string;
+    refresh_token: string;
+  };
+  sessionId: string;
+  expires: Date;
+};
