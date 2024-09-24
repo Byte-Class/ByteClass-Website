@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CalendarCheck, CalendarDays, Plus } from "lucide-react";
+import { CalendarCheck, CalendarDays, LoaderCircle, Plus } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -113,7 +113,12 @@ export const CreateButton = () => {
                 />
               </div>
               <DialogFooter>
-                <Button type="submit">Create Calendar</Button>
+                <Button disabled={createForm.isLoading} type="submit">
+                  {createForm.isLoading && (
+                    <LoaderCircle className="animate-spin" />
+                  )}{" "}
+                  Create Calendar
+                </Button>
               </DialogFooter>
             </form>
           </Form>
