@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CalendarCheck, CalendarDays, LoaderCircle, Plus } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -38,23 +39,27 @@ import {
 import { Input } from "@/components/ui/input";
 
 export const CreateButton = () => {
+  const router = useRouter();
+
   const [createCalendar, setCreateCalendar] = useState<boolean>(false);
   const [createEvent, setCreateEvent] = useState<boolean>(false);
-
-  const createForm = trpc.calendar.create.useMutation({
-    onSuccess() {
-      toast.success("Successfully Created Calendar");
-    },
-    onError(err) {
-      toast.error(err.message);
-    },
-  });
 
   const createCalendarForm = useForm<z.infer<typeof CalendarValidator>>({
     resolver: zodResolver(CalendarValidator),
     defaultValues: {
       name: "",
       description: "",
+    },
+  });
+
+  const createForm = trpc.calendar.create.useMutation({
+    onSuccess() {
+      toast.success("Successfully Created Calendar");
+      createCalendarForm.reset();
+      router.refresh();
+    },
+    onError(err) {
+      toast.error(err.message);
     },
   });
 
@@ -102,10 +107,13 @@ export const CreateButton = () => {
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Input placeholder="Name of Calendar" {...field} />
+                        <Input
+                          placeholder="Description of Calendar"
+                          {...field}
+                        />
                       </FormControl>
                       <FormDescription>
-                        This is the name of your calendar
+                        This is the Description of your calendar
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

@@ -6,6 +6,7 @@ import { db } from "@/core/db";
 import { calendar as calendarTable } from "@/core/db/schema";
 import { TRPCError } from "@trpc/server";
 import { DRIZZLE_ERRORS } from "@/core/data/error-codes";
+import { eq } from "drizzle-orm";
 
 // calendar router
 export const calendar = router({
@@ -41,4 +42,18 @@ export const calendar = router({
         detail: "Success",
       };
     }),
+  getAll: userProcedure.query(async ({ ctx }) => {
+    try {
+      return await db
+        .select()
+        .from(calendarTable)
+        .where(eq(calendarTable.user_id, ctx.session.user.id));
+    } catch (err) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An Unknown Error has occurred",
+        cause: "An Unknown Error has occurred",
+      });
+    }
+  }),
 });
