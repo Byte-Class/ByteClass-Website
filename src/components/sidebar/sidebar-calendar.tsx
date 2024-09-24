@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { CreateButton } from "@/components/sidebar/create-button";
 import { serverTrpc } from "@/client/server";
 import { auth } from "@/core/hooks/auth";
+import { CheckBoxSidebar } from "./checkbox";
 
 export const SideBarCalendar = async () => {
   const session = (await auth())!;
@@ -23,9 +24,16 @@ export const SideBarCalendar = async () => {
       <div>
         <h2 className="text-lg font-bold">Calendars</h2>
 
-        <div className="w-full">
+        <div className="mt-2 flex w-full flex-col gap-2">
           {calendars.map((calendar) => {
-            return <p key={calendar.id}>{calendar.name}</p>;
+            return (
+              <CheckBoxSidebar
+                key={calendar.id}
+                id={calendar.id}
+                text={calendar.name}
+                active={calendar.active}
+              />
+            );
           })}
 
           {calendars.length === 0 && <p>Create a calendar pwease 🥺👉👈</p>}
