@@ -1,11 +1,11 @@
 "use client";
 
 import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { trpc } from "@/client";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/navigation";
-import { LoaderCircle } from "lucide-react";
 
 export const CheckBoxSidebar = ({
   id,

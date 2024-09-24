@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { CreateButton } from "@/components/sidebar/create-button";
 import { serverTrpc } from "@/client/server";
 import { auth } from "@/core/hooks/auth";
-import { CheckBoxSidebar } from "./checkbox";
+import { CheckBoxSidebar } from "@/components/sidebar/checkbox";
 
 export const SideBarCalendar = async () => {
   const session = (await auth())!;
