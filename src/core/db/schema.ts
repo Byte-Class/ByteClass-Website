@@ -5,6 +5,8 @@ import {
   pgEnum,
   bigint,
   timestamp,
+  jsonb,
+  date,
 } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
 
@@ -67,4 +69,57 @@ export const session = pgTable("session", {
     withTimezone: true,
     mode: "date",
   }).notNull(),
+});
+
+export const calendar = pgTable("calendar", {
+  user_id: varchar("user_id ")
+    .references(() => user.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  id: varchar("id", { length: 128 })
+    .primaryKey()
+    .$defaultFn(() => createId())
+    .notNull(),
+  name: varchar("name", {
+    length: 50,
+  })
+    .notNull()
+    .unique(),
+  description: varchar("description", {
+    length: 200,
+  }).notNull(),
+  created_at: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const event = pgTable("event", {
+  calendar_id: varchar("calendar_id")
+    .references(() => calendar.id, {
+      onDelete: "cascade",
+    })
+    .notNull()
+    .unique(),
+  id: varchar("id", { length: 128 })
+    .primaryKey()
+    .$defaultFn(() => createId())
+    .notNull(),
+  name: varchar("name", {
+    length: 50,
+  }).notNull(),
+  description: varchar("description", {
+    length: 200,
+  }).notNull(),
+  day: date("day").notNull(),
+  time: jsonb("time").$type<{ start: Date; end: Date }>().notNull(),
+  created_at: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
 });

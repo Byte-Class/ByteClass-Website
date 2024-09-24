@@ -5,6 +5,10 @@ import { CalendarCheck, CalendarDays, Plus } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+
+import { CalendarValidator } from "@/core/types/validators";
+import { trpc } from "@/client/index";
 
 import {
   DropdownMenu,
@@ -33,27 +37,32 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const createCalendarSchema = z.object({
-  name: z.string().min(2).max(50),
-  description: z.string().min(2).max(200),
-});
-
 export const CreateButton = () => {
   const [createCalendar, setCreateCalendar] = useState<boolean>(false);
   const [createEvent, setCreateEvent] = useState<boolean>(false);
 
-  const createCalendarForm = useForm<z.infer<typeof createCalendarSchema>>({
-    resolver: zodResolver(createCalendarSchema),
+  const createForm = trpc.calendar.create.useMutation({
+    onSuccess() {
+      toast.success("Successfully Created Calendar");
+    },
+    onError(err) {
+      toast.error(err.message);
+    },
+  });
+
+  const createCalendarForm = useForm<z.infer<typeof CalendarValidator>>({
+    resolver: zodResolver(CalendarValidator),
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  const handleCreateCalendar = (
-    values: z.infer<typeof createCalendarSchema>,
-  ) => {
-    console.log(values);
+  const handleCreateCalendar = (values: z.infer<typeof CalendarValidator>) => {
+    createForm.mutate({
+      name: values.name,
+      description: values.description,
+    });
   };
 
   return (

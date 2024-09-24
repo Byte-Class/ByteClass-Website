@@ -1,0 +1,1 @@
+ALTER TABLE "calendar" DROP CONSTRAINT "calendar_user_id _unique";

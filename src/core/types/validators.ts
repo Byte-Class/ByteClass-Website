@@ -17,4 +17,18 @@ export const AccessToken = z.object({
   iat: z.number(),
 });
 
+export const CalendarValidator = z.object({
+  name: z.string().min(1).max(50),
+  description: z.string().min(1).max(200),
+});
+
+export const EventValidator = z.object({
+  name: z.string().min(2).max(50),
+  description: z.string().min(1).max(200),
+  location: z.string().min(1).max(100),
+  day: z.date(),
+  start: z.date(),
+  end: z.date(),
+});
+
 export type T_AccessToken = z.infer<typeof AccessToken>;

@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { Provider } from "@/components/provider";
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased">
         <Provider>{children}</Provider>
-        <Toaster />
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );
