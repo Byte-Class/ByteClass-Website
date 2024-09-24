@@ -1,0 +1,1 @@
+ALTER TABLE "calendar" ADD COLUMN "active" boolean DEFAULT false NOT NULL;

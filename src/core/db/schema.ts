@@ -7,6 +7,7 @@ import {
   timestamp,
   jsonb,
   date,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
 
@@ -89,6 +90,7 @@ export const calendar = pgTable("calendar", {
   description: varchar("description", {
     length: 200,
   }).notNull(),
+  active: boolean("active").notNull().default(false),
   created_at: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
