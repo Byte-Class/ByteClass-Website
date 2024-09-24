@@ -123,7 +123,7 @@ export const CreateButton = () => {
               <DialogFooter>
                 <Button disabled={createForm.isLoading} type="submit">
                   {createForm.isLoading && (
-                    <LoaderCircle className="animate-spin" />
+                    <LoaderCircle className="mr-2 animate-spin" />
                   )}{" "}
                   Create Calendar
                 </Button>
