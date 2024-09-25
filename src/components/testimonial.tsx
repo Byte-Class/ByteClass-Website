@@ -22,7 +22,7 @@ export const Testimonial = ({
 
       <Image
         src={`/testimonials/${image}`}
-        className="absolute -top-12 left-1/2 -translate-x-1/2 rounded-full"
+        className="absolute -top-12 left-1/2 h-auto w-auto -translate-x-1/2 rounded-full"
         alt="Nerds"
         height={96}
         width={96}

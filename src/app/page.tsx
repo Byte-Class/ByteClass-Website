@@ -32,6 +32,7 @@ export default function Home() {
               alt={"Woman on laptop and she looks worried"}
               width={1500}
               height={1500}
+              priority
             />
           </div>
         </div>
