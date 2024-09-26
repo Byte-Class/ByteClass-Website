@@ -45,3 +45,10 @@ export type T_Session = {
   sessionId: string;
   expires: Date;
 };
+
+export const CalendarSearchParams = z
+  .object({
+    type: z.union([z.literal("month"), z.literal("week"), z.literal("day")]),
+    week: z.coerce.number(),
+  })
+  .strict();

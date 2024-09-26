@@ -70,7 +70,6 @@ export const calendar = router({
           sql`update ${calendarTable} set active = NOT active where ${calendarTable.id} = ${input.calendarId} and ${calendarTable.user_id} = ${ctx.session.user.id}`,
         );
       } catch (err) {
-        console.log(err);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "An Unknown Error has occurred",
