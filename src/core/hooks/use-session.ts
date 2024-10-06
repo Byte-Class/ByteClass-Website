@@ -1,10 +1,9 @@
 import { useContext } from "react";
 
 import { SessionContext } from "@/core/context/session-context";
-import { T_Session } from "@/core/types/validators";
 
 // Custom hook to return the session from the session provider with context
-export const useSession = (): undefined | T_Session | string => {
+export const useSession = () => {
   // base case
   if (!SessionContext) {
     throw new Error("You can not use useSession in a server component");

@@ -1,22 +1,5 @@
 import { z } from "zod";
 
-export const GoogleAuthRes = z.object({
-  access_token: z.string(),
-  refresh_token: z.string(),
-  scope: z.string(),
-  token_type: z.string(),
-  id_token: z.string(),
-  expiry_date: z.number(),
-});
-export type T_GoogleAuthRes = z.infer<typeof GoogleAuthRes>;
-
-export const AccessToken = z.object({
-  sessionId: z.string(),
-  exp: z.number(),
-  iat: z.number(),
-});
-export type T_AccessToken = z.infer<typeof AccessToken>;
-
 export const CalendarValidator = z.object({
   name: z.string().min(1).max(50),
   description: z.string().min(1).max(200),
@@ -31,24 +14,65 @@ export const EventValidator = z.object({
   end: z.date(),
 });
 
-export type T_Session = {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    photo: string;
-  };
-  google: {
-    access_token: string;
-    refresh_token: string;
-  };
-  sessionId: string;
-  expires: Date;
-};
-
 export const CalendarSearchParams = z
   .object({
     type: z.union([z.literal("month"), z.literal("week"), z.literal("day")]),
     week: z.coerce.number(),
   })
   .strict();
+
+export const validateMiddlewareTokens = z
+  .object({
+    accessToken: z.string(),
+    refreshToken: z.string(),
+  })
+  .strict();
+
+export const TokenPayload = z
+  .object({
+    id: z.string().cuid2(),
+    exp: z.number(),
+    iat: z.number(),
+  })
+  .strict();
+
+export const Session = z
+  .object({
+    user: z.object({
+      id: z.string().cuid2(),
+      name: z.string(),
+      email: z.string().email(),
+      photo: z.string().url(),
+      role: z.union([z.literal("user"), z.literal("admin")]),
+    }),
+    google: z.object({
+      accessToken: z.string(),
+      refreshToken: z.string(),
+    }),
+  })
+  .strict();
+
+export type TSession = z.infer<typeof Session>;
+
+export type AuthConfig = {
+  pages: {
+    home: string;
+    signin: string;
+    dashboard: string;
+    authError: string;
+    auth: string;
+  };
+  google: {
+    clientId: string;
+    clientSecret: string;
+    redirectUrl: string;
+  };
+  jwt: {
+    accessTokenSecret: string;
+    refreshTokenSecret: string;
+    expiration: {
+      accessToken: number;
+      refreshToken: number;
+    };
+  };
+};

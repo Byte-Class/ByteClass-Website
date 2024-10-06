@@ -6,6 +6,7 @@ declare global {
       GOOGLE_REDIRECT_URL: string;
 
       ACCESS_TOKEN_SECRET: string;
+      REFRESH_TOKEN_SECRET: string;
 
       DATABASE_URL: string;
     }

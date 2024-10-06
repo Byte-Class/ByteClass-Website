@@ -3,7 +3,7 @@ import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { CreateButton } from "@/components/sidebar/create-button";
 import { serverTrpc } from "@/client/server";
-import { auth } from "@/core/hooks/auth";
+import { auth } from "@/core/auth";
 import { CheckBoxSidebar } from "@/components/sidebar/checkbox";
 
 export const SideBarCalendar = async () => {

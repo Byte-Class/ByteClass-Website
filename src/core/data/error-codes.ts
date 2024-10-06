@@ -1,3 +1,3 @@
 export const DRIZZLE_ERRORS = {
   UNIQUE_CONSTRAINT_VIOLATION: "23505",
-};
+} as const;

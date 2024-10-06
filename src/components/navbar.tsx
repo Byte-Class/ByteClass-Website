@@ -1,14 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { auth } from "@/core/hooks/auth";
 import { greeting } from "@/core/utils/greeting";
 import { BreadCrumbs } from "@/components/breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { signOut } from "@/core/auth/actions";
+import { auth } from "@/core/auth";
 
 export const Navbar = async () => {
   const session = await auth();
+
+  console.log(session?.user.photo);
 
   // return Not logged In navbar
   if (!session) {
@@ -22,7 +25,9 @@ export const Navbar = async () => {
         />
 
         <Link href={"/signin"}>
-          <Button className="px-12 py-8">Sign In</Button>
+          <Button className="px-12 py-8" type="submit">
+            Sign In
+          </Button>
         </Link>
       </nav>
     );
@@ -44,7 +49,11 @@ export const Navbar = async () => {
         <BreadCrumbs />
       </div>
 
-      <Button className="px-12 py-8">Sign Out</Button>
+      <form action={signOut}>
+        <Button className="px-12 py-8" type="submit">
+          Sign Out
+        </Button>
+      </form>
     </nav>
   );
 };

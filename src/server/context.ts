@@ -1,4 +1,5 @@
-import { auth } from "@/core/hooks/auth";
+import { auth } from "@/core/auth";
+
 export async function createContext() {
   const session = await auth();
 

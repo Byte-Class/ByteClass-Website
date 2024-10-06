@@ -9,3 +9,11 @@ export const serverTrpc = (session: Context) => {
 
   return caller;
 };
+
+export const authCaller = () => {
+  const createCaller = createCallerFactory(appRouter);
+
+  const caller = createCaller({ session: undefined });
+
+  return caller;
+};

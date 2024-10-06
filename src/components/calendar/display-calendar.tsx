@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Children, useCallback } from "react";
+import React, { Children, useCallback, JSX } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 import { CalendarSearchParams } from "@/core/types/validators";
@@ -54,7 +54,7 @@ export const DisplayCalendar = ({
   return (
     <>
       {type === "month"
-        ? arrChildren[0]
+        ? React.cloneElement(arrChildren[0] as JSX.Element, { week })
         : type === "week"
           ? arrChildren[1]
           : arrChildren[2]}
