@@ -147,7 +147,10 @@ export const auth = router({
       }
 
       // now we just generate access/refresh tokens, and return them to the client
-      const accessToken = await createAccessToken(id, 10);
+      const accessToken = await createAccessToken(
+        id,
+        CONFIG.jwt.expiration.accessToken,
+      );
       const refreshToken = await createRefreshToken(
         id,
         CONFIG.jwt.expiration.refreshToken,

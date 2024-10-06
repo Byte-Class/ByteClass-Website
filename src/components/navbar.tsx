@@ -11,8 +11,6 @@ import { auth } from "@/core/auth";
 export const Navbar = async () => {
   const session = await auth();
 
-  console.log(session?.user.photo);
-
   // return Not logged In navbar
   if (!session) {
     return (

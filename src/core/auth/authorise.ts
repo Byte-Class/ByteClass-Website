@@ -47,8 +47,13 @@ export const authorise = async (req: NextRequest) => {
 
   // if refresh needed, then we refresh the client :)
   if (refresh) {
+    const { pathname, search } = req.nextUrl;
+
     return NextResponse.redirect(
-      new URL(`${CONFIG.pages.auth}/refresh`, req.url),
+      new URL(
+        `${CONFIG.pages.auth}/refresh?url=${`${pathname}${search}`}`,
+        req.url,
+      ),
     );
   }
 
