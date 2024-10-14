@@ -1,11 +1,14 @@
 import { createCallerFactory } from "@/server/trpc";
-import { Context } from "@/server/context";
 import { appRouter } from "@/server";
 
-export const serverTrpc = (session: Context) => {
+import { auth } from "@/core/auth";
+
+export const serverTrpc = async () => {
+  const session = (await auth())!;
+
   const createCaller = createCallerFactory(appRouter);
 
-  const caller = createCaller(session);
+  const caller = createCaller({ session });
 
   return caller;
 };

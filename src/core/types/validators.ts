@@ -12,6 +12,8 @@ export const EventValidator = z.object({
   day: z.date(),
   start: z.date(),
   end: z.date(),
+  colour: z.custom<ColourType>(),
+  calendar: z.string(),
 });
 
 export const CalendarSearchParams = z
@@ -53,6 +55,14 @@ export const Session = z
   .strict();
 
 export type TSession = z.infer<typeof Session>;
+
+export type ColourType =
+  | "F02D3A"
+  | "FF964F"
+  | "F0D975"
+  | "57BD57"
+  | "6FA8D6"
+  | "A185D6";
 
 export type AuthConfig = {
   pages: {

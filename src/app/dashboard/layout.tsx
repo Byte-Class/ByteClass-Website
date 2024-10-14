@@ -10,13 +10,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
 
-      <div className="flex min-h-[calc(100lvh-7rem)] w-full gap-2">
+      <div className="flex h-[calc(100lvh-7rem)] w-full gap-2">
         <SideBar>
           <SideBarCalendar />
           <SideBarGeneral />
         </SideBar>
 
-        <main>{children}</main>
+        <main className="flex-grow px-2">{children}</main>
       </div>
     </>
   );

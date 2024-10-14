@@ -4,6 +4,9 @@ import React, { Children, useCallback, JSX } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 import { CalendarSearchParams } from "@/core/types/validators";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+const DEFAULT_VALUE: "month" | "week" | "day" = "week";
 
 export const DisplayCalendar = ({
   children,
@@ -44,7 +47,7 @@ export const DisplayCalendar = ({
 
   if (!parse.success) {
     router.push(
-      `${pathname}?${createQueryString("week", "0")}&${createQueryString("type", "week")}`,
+      `${pathname}?${createQueryString("week", "0")}&${createQueryString("type", DEFAULT_VALUE)}`,
     );
     return;
   }
@@ -53,6 +56,22 @@ export const DisplayCalendar = ({
 
   return (
     <>
+      <div className="w-full">
+        <ToggleGroup
+          type="single"
+          variant={"outline"}
+          onValueChange={(e) => {
+            router.push(
+              `${pathname}?${createQueryString(DEFAULT_VALUE, week.toString())}&${createQueryString("type", e.valueOf())}`,
+            );
+          }}
+          defaultValue={DEFAULT_VALUE}
+        >
+          <ToggleGroupItem value="month">Month</ToggleGroupItem>
+          <ToggleGroupItem value="week">Week</ToggleGroupItem>
+          <ToggleGroupItem value="day">Day</ToggleGroupItem>
+        </ToggleGroup>
+      </div>
       {type === "month"
         ? React.cloneElement(arrChildren[0] as JSX.Element, { week })
         : type === "week"

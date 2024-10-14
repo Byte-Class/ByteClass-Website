@@ -1,15 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { CalendarCheck, CalendarDays, LoaderCircle, Plus } from "lucide-react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-
-import { CalendarValidator } from "@/core/types/validators";
-import { trpc } from "@/client/index";
+import { CalendarCheck, CalendarDays, Plus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -21,54 +13,17 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { CreateCalendarForm } from "@/components/sidebar/form/create-calendar";
+import { CreateEventForm } from "@/components/sidebar/form/create-event";
+import { TCalendar } from "@/core/db/types";
 
-export const CreateButton = () => {
-  const router = useRouter();
-
+export const CreateButton = ({ calendars }: { calendars: TCalendar[] }) => {
   const [createCalendar, setCreateCalendar] = useState<boolean>(false);
   const [createEvent, setCreateEvent] = useState<boolean>(false);
-
-  const createCalendarForm = useForm<z.infer<typeof CalendarValidator>>({
-    resolver: zodResolver(CalendarValidator),
-    defaultValues: {
-      name: "",
-      description: "",
-    },
-  });
-
-  const createForm = trpc.calendar.create.useMutation({
-    onSuccess() {
-      toast.success("Successfully Created Calendar");
-      createCalendarForm.reset();
-      router.refresh();
-    },
-    onError(err) {
-      toast.error(err.message);
-    },
-  });
-
-  const handleCreateCalendar = (values: z.infer<typeof CalendarValidator>) => {
-    createForm.mutate({
-      name: values.name,
-      description: values.description,
-    });
-  };
 
   return (
     <>
@@ -78,58 +33,7 @@ export const CreateButton = () => {
             <DialogTitle>Create Calendar</DialogTitle>
           </DialogHeader>
 
-          <Form {...createCalendarForm}>
-            <form
-              onSubmit={createCalendarForm.handleSubmit(handleCreateCalendar)}
-            >
-              <div className="flex flex-col gap-4">
-                <FormField
-                  control={createCalendarForm.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Name of Calendar" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        This is the name of your calendar
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={createCalendarForm.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Description of Calendar"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        This is the Description of your calendar
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <DialogFooter>
-                <Button disabled={createForm.isLoading} type="submit">
-                  {createForm.isLoading && (
-                    <LoaderCircle className="mr-2 animate-spin" />
-                  )}{" "}
-                  Create Calendar
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
+          <CreateCalendarForm />
         </DialogContent>
       </Dialog>
 
@@ -137,8 +41,9 @@ export const CreateButton = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create Event</DialogTitle>
-            <DialogDescription>Create A Event</DialogDescription>
           </DialogHeader>
+
+          <CreateEventForm calendars={calendars} />
         </DialogContent>
       </Dialog>
 

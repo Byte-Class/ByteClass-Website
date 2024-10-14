@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { eq } from "drizzle-orm";
+import { cache } from "react";
 
 import { CONFIG } from "@/core/data/config";
 import { TokenPayload, TSession } from "@/core/types/validators";
@@ -11,7 +12,7 @@ import { googleInfo, user } from "@/core/db/schema";
  * Function to return a server session
  * @returns Promise<TSession | undefined>
  */
-export const auth = async (): Promise<TSession | undefined> => {
+export const auth = cache(async (): Promise<TSession | undefined> => {
   const accessToken = cookies().get("accessToken")?.value;
 
   if (!accessToken) {
@@ -89,4 +90,4 @@ export const auth = async (): Promise<TSession | undefined> => {
       refreshToken: providerInfo.refreshToken,
     },
   };
-};
+});

@@ -13,7 +13,7 @@ const EXPIRATION = 60 * 60 * 24;
 export const dashboard = router({
   // pie chart procedure TODO FINISH THIS
   pieChart: userProcedure.query(async ({ ctx }) => {
-    authGoogle(ctx.session.google.refresh_token);
+    authGoogle(ctx.session.google.refreshToken);
 
     const classroom = google.classroom("v1");
 
@@ -93,7 +93,7 @@ export const dashboard = router({
       }),
     )
     .query(async ({ ctx }) => {
-      authGoogle(ctx.session.google.refresh_token);
+      authGoogle(ctx.session.google.refreshToken);
 
       const classroom = google.classroom("v1");
 

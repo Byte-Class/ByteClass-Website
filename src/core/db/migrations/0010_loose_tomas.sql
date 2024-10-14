@@ -1,0 +1,1 @@
+ALTER TABLE "event" ALTER COLUMN "day" SET DATA TYPE text;

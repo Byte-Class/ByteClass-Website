@@ -7,7 +7,7 @@ export const SideBarGeneral = () => {
   const links = [
     {
       title: "Calendar",
-      href: "/calendar?week=0&type=week",
+      href: "/calendar/week/0",
     },
     {
       title: "My Files",

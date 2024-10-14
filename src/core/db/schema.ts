@@ -6,7 +6,6 @@ import {
   bigint,
   timestamp,
   jsonb,
-  date,
   boolean,
 } from "drizzle-orm/pg-core";
 import { createId } from "@paralleldrive/cuid2";
@@ -104,8 +103,7 @@ export const event = pgTable("event", {
     .references(() => calendar.id, {
       onDelete: "cascade",
     })
-    .notNull()
-    .unique(),
+    .notNull(),
   id: varchar("id", { length: 128 })
     .primaryKey()
     .$defaultFn(() => createId())
@@ -116,12 +114,13 @@ export const event = pgTable("event", {
   description: varchar("description", {
     length: 200,
   }).notNull(),
-  day: date("day").notNull(),
-  time: jsonb("time").$type<{ start: Date; end: Date }>().notNull(),
+  day: text("day").notNull(),
+  time: jsonb("time").$type<{ start: string; end: string }>().notNull(),
   created_at: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
   })
     .notNull()
     .defaultNow(),
+  colour: text("colour").notNull(),
 });

@@ -3,17 +3,16 @@ import React from "react";
 import { Separator } from "@/components/ui/separator";
 import { CreateButton } from "@/components/sidebar/create-button";
 import { serverTrpc } from "@/client/server";
-import { auth } from "@/core/auth";
 import { CheckBoxSidebar } from "@/components/sidebar/checkbox";
 
 export const SideBarCalendar = async () => {
-  const session = (await auth())!;
+  const server = await serverTrpc();
 
-  const calendars = await serverTrpc({ session }).calendar.getAll();
+  const calendars = await server.calendar.all();
 
   return (
     <div className="flex w-full flex-col justify-center gap-4">
-      <CreateButton />
+      <CreateButton calendars={calendars} />
 
       <Separator />
 

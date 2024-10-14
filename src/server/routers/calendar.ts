@@ -43,7 +43,7 @@ export const calendar = router({
         detail: "Success",
       };
     }),
-  getAll: userProcedure.query(async ({ ctx }) => {
+  all: userProcedure.query(async ({ ctx }) => {
     try {
       return await db
         .select()

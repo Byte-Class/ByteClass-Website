@@ -13,7 +13,9 @@ export const SideBar = ({ children }: { children: React.ReactNode }) => {
   // if the current path is the calendar, then we return the calendar sidebar, else we just return the general sidebar
   return (
     <div className="min-h-[calc(100lvh-7rem)] w-56 px-2">
-      {pathname === "/dashboard/calendar" ? arrChildren[0] : arrChildren[1]}
+      {pathname.split("/").filter((e) => e !== "")[1] === "calendar"
+        ? arrChildren[0]
+        : arrChildren[1]}
     </div>
   );
 };
