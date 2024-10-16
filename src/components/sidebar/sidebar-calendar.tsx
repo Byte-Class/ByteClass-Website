@@ -9,6 +9,7 @@ export const SideBarCalendar = async () => {
   const server = await serverTrpc();
 
   const calendars = await server.calendar.all();
+  // const currentDayEvents = await server.event.currentDayEvents();
 
   return (
     <div className="flex w-full flex-col justify-center gap-4">
@@ -16,7 +17,9 @@ export const SideBarCalendar = async () => {
 
       <Separator />
 
-      <h2 className="text-lg font-bold">Agenda</h2>
+      <div className="w-full">
+        <h2 className="text-lg font-bold">Agenda</h2>
+      </div>
 
       <Separator />
 
@@ -35,7 +38,7 @@ export const SideBarCalendar = async () => {
             );
           })}
 
-          {calendars.length === 0 && <p>Create a calendar pwease 🥺👉👈</p>}
+          {calendars.length === 0 && <p>Cweate a cawendar pwease 🥺👉👈</p>}
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
+import { addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { addWeeks, endOfWeek, format, startOfWeek } from "date-fns";
 
 export const SwitchCalendarType = () => {
   const router = useRouter();
@@ -34,14 +34,16 @@ export const SwitchCalendarType = () => {
           +
         </button>
 
-        <DisplayMonth calendarType={calendarType} offset={currentOffset} />
+        {DisplayCalendar(calendarType, currentOffset)}
       </div>
 
       <ToggleGroup
         type="single"
         variant={"outline"}
         onValueChange={(e) => {
-          router.push(`/dashboard/calendar/${e.valueOf()}/0`);
+          if (e.valueOf()) {
+            router.push(`/dashboard/calendar/${e.valueOf()}/0`);
+          }
         }}
         value={calendarType}
       >
@@ -53,13 +55,10 @@ export const SwitchCalendarType = () => {
   );
 };
 
-const DisplayMonth = ({
-  calendarType,
-  offset,
-}: {
-  calendarType: "month" | "week" | "day";
-  offset: number;
-}) => {
+const DisplayCalendar = (
+  calendarType: "month" | "week" | "day",
+  offset: number,
+) => {
   switch (calendarType) {
     case "month":
       return <h2>e</h2>;

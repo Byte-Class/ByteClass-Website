@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { eachDayOfInterval, formatISO, parseISO } from "date-fns";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "@/core/db";
 import { event as eventTable, calendar } from "@/core/db/schema";
 import { EventValidator } from "@/core/types/validators";
 import { router, userProcedure } from "@/server/trpc";
 import { TRPCError } from "@trpc/server";
-import { and, eq, inArray } from "drizzle-orm";
 
 const INVALID_DATE = "Invalid Date";
 
@@ -122,4 +122,7 @@ export const event = router({
 
       return events;
     }),
+  currentDayEvents: userProcedure.query(async ({}) => {
+    return 0;
+  }),
 });
