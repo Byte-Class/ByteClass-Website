@@ -1,5 +1,5 @@
 import Error from "postgres";
-import { asc, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { router, userProcedure } from "@/server/trpc";
@@ -26,16 +26,16 @@ export const calendar = router({
           if (err.code === DRIZZLE_ERRORS.UNIQUE_CONSTRAINT_VIOLATION) {
             throw new TRPCError({
               code: "INTERNAL_SERVER_ERROR",
-              message: "You can not create a calendar with a duplicate name",
               cause: "Calendar Name",
+              message: "You can not create a calendar with a duplicate name",
             });
           }
         }
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "An Unknown Error has occurred",
           cause: "An Unknown Error has occurred",
+          message: "An Unknown Error has occurred",
         });
       }
 
@@ -53,8 +53,8 @@ export const calendar = router({
     } catch (err) {
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "An Unknown Error has occurred",
         cause: "An Unknown Error has occurred",
+        message: "An Unknown Error has occurred",
       });
     }
   }),
@@ -74,6 +74,34 @@ export const calendar = router({
           code: "INTERNAL_SERVER_ERROR",
           message: "An Unknown Error has occurred",
           cause: "An Unknown Error has occurred",
+        });
+      }
+
+      return {
+        detail: "Success",
+      };
+    }),
+  delete: userProcedure
+    .input(
+      z.object({
+        id: z.string().cuid2(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        await db
+          .delete(calendarTable)
+          .where(
+            and(
+              eq(calendarTable.user_id, ctx.session.user.id),
+              eq(calendarTable.id, input.id),
+            ),
+          );
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          cause: "An Unknown Error has occurred",
+          message: "An Unknown Error has occurred",
         });
       }
 

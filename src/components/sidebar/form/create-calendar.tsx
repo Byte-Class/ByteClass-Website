@@ -83,12 +83,15 @@ export const CreateCalendarForm = () => {
             )}
           />
         </div>
-        <DialogFooter>
+        <DialogFooter className="mt-4">
           <Button disabled={createForm.isLoading} type="submit">
-            {createForm.isLoading && (
-              <LoaderCircle className="mr-2 animate-spin" />
-            )}{" "}
-            Create Calendar
+            {createForm.isLoading ? (
+              <>
+                <LoaderCircle className="mr-1 w-4 animate-spin" /> Loading...
+              </>
+            ) : (
+              "Create Calendar"
+            )}
           </Button>
         </DialogFooter>
       </form>

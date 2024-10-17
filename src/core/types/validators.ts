@@ -62,7 +62,8 @@ export type ColourType =
   | "F0D975"
   | "57BD57"
   | "6FA8D6"
-  | "A185D6";
+  | "A185D6"
+  | "36454F";
 
 export type AuthConfig = {
   pages: {

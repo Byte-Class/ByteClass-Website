@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -64,8 +63,6 @@ export const CreateButton = ({ calendars }: { calendars: TCalendar[] }) => {
               <CalendarCheck /> Create Calendar
             </button>
           </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
 
           <DropdownMenuItem>
             <button
