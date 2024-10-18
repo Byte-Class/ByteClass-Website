@@ -6,6 +6,7 @@ import {
   endOfWeek,
   format,
   formatISO,
+  isSameDay,
   isToday,
   parseISO,
   startOfDay,
@@ -17,6 +18,7 @@ import { serverTrpc } from "@/client/server";
 
 import { Separator } from "@/components/ui/separator";
 import { WeekEvent } from "@/components/calendar/event";
+import { CurrentTimeIndicator } from "@/components/calendar/current-time";
 
 const timesInDay = eachHourOfInterval({
   start: startOfDay(new Date()),
@@ -25,7 +27,7 @@ const timesInDay = eachHourOfInterval({
 
 export const WeekCalendar = async ({ offset }: { offset: number }) => {
   const today = new Date();
-  const weekToRender = addWeeks(today, offset);
+  const weekToRender = addWeeks(today, offset); // Week that needed to render due to offset in URL
 
   const start = startOfWeek(weekToRender);
   const end = endOfWeek(weekToRender);
@@ -35,15 +37,14 @@ export const WeekCalendar = async ({ offset }: { offset: number }) => {
     end,
   });
 
+  // fetch events for this week
   const server = await serverTrpc();
-
   const eventsToDisplay = await server.event.fetchEventsForWeek({
     start: formatISO(start),
     end: formatISO(end),
   });
 
-  type TKeys = keyof typeof eventsPerDay;
-
+  // JSON object of days that's needed to display for this week
   const eventsPerDay: Record<string, TEvent[]> = {
     Monday: [],
     Tuesday: [],
@@ -54,52 +55,69 @@ export const WeekCalendar = async ({ offset }: { offset: number }) => {
     Sunday: [],
   };
 
+  type TKeys = keyof typeof eventsPerDay;
+
+  // Loop over all events and add them to their week in the eventsPerDay
   for (const event of eventsToDisplay)
     eventsPerDay[format(parseISO(event.day), "eeee") as TKeys].push(event);
 
   return (
-    <div className="flex w-full flex-grow overflow-x-hidden overflow-y-scroll">
-      <div className="mt-12 w-16">
-        {timesInDay.map((time) => {
+    <div className="relative flex w-full flex-grow flex-col overflow-x-hidden">
+      {/* Day information at the top */}
+      <div className="ml-16 flex h-24 w-[calc(100%-4rem)] py-2">
+        {weekInterval.map((day) => {
           return (
             <div
-              key={time.toISOString()}
-              className="relative flex aspect-square w-full items-center justify-center"
+              className="flex h-full flex-1 flex-col items-center justify-center"
+              key={day.toISOString()}
             >
-              <p>
-                {format(time, "h")} {format(time, "a")}
-              </p>
-              <Separator className="absolute left-16 w-[calc(100vw-15rem)]" />
+              <h2 className="text-xl font-bold">{format(day, "E")}</h2>
+
+              {isToday(day) ? (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500">
+                  <p>{format(day, "dd")}</p>
+                </div>
+              ) : (
+                <div>
+                  <p>{format(day, "dd")}</p>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
 
-      <div className="flex flex-grow">
-        {weekInterval.map((day) => {
-          return (
-            <div className="relative flex flex-1 flex-col" key={day.getDay()}>
-              {/* Day Information */}
-              <div className="flex h-20 flex-col items-center justify-center gap-2">
-                <h2 className="text-xl font-bold">{format(day, "E")}</h2>
+      {/* Events and times */}
+      <div className="flex flex-grow overflow-x-hidden overflow-y-scroll">
+        {/* Times */}
+        <div className="h-auto w-16">
+          {timesInDay.map((time) => {
+            return (
+              <div
+                key={time.toISOString()}
+                className="relative flex aspect-square w-full items-center justify-center"
+              >
+                <p>
+                  {format(time, "h")} {format(time, "a")}
+                </p>
+                <Separator className="absolute left-16 w-[calc(100vw-15rem)]" />
+              </div>
+            );
+          })}
+        </div>
 
-                {isToday(day) ? (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500">
-                    <p>{format(day, "dd")}</p>
-                  </div>
-                ) : (
-                  <div>
-                    <p>{format(day, "dd")}</p>
-                  </div>
-                )}
-              </div>
-              {/* Display Events */}
-              <div className="bg-red relative">
+        {/* Events */}
+        <div className="flex h-full flex-grow">
+          {weekInterval.map((day) => {
+            return (
+              <div className="relative flex-grow" key={day.getUTCDay()}>
                 {DisplayEvents(eventsPerDay[format(day, "eeee") as TKeys])}
+
+                {isSameDay(day, new Date()) && <CurrentTimeIndicator />}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

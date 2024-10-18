@@ -24,6 +24,8 @@ type TTime = {
   end: string;
 };
 
+const MAX_NAME_LENGTH = 18; // 17 characters is the max length of the name of an event
+
 // function to format the time of a class
 const formatDate = (start: Date, end: Date) => {
   if (format(start, "aaa") === format(end, "aaa")) {
@@ -38,7 +40,7 @@ export const WeekEvent = ({ event }: { event: TEvent }) => {
   const end = parseISO((event.time as TTime).end);
 
   // top and height values
-  const top = getHours(start) * 64 + (getMinutes(start) / 60) * 64;
+  const top = getHours(start) * 64 + (getMinutes(start) / 60) * 64 + 32;
   const height = (differenceInMinutes(end, start) / 60) * 64;
 
   return (
@@ -54,7 +56,13 @@ export const WeekEvent = ({ event }: { event: TEvent }) => {
           }}
           key={event.id}
         >
-          <p className="font-bold">{event.name}</p>
+          <p className="font-bold">
+            {event.name.split("").length >= MAX_NAME_LENGTH ? (
+              <>{event.name.split("").slice(0, MAX_NAME_LENGTH)}...</>
+            ) : (
+              event.name
+            )}
+          </p>
 
           {height < 64 ? null : (
             <p className="text-xs font-bold">{formatDate(start, end)}</p>
